@@ -20,11 +20,7 @@
                 radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(255, 119, 198, 0.3) 0%, transparent 50%);
         }
-        .container {
-            max-width: 800px;
-            width: 100%;
-            text-align: center;
-        }
+        .container { max-width: 800px; width: 100%; text-align: center; }
         h1 {
             font-family: 'ZCOOL KuaiLe', cursive;
             font-size: 3rem;
@@ -33,15 +29,8 @@
             text-shadow: 0 0 20px rgba(255, 107, 157, 0.5);
             animation: float 3s ease-in-out infinite;
         }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        .subtitle {
-            font-size: 1.2rem;
-            color: #a0a0a0;
-            margin-bottom: 30px;
-        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .subtitle { font-size: 1.2rem; color: #a0a0a0; margin-bottom: 30px; }
         .chat-box {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 20px;
@@ -58,12 +47,7 @@
             overflow: hidden;
             box-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
         }
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
         .problem-select {
             width: 100%;
             padding: 15px;
@@ -74,12 +58,6 @@
             color: #fff;
             margin-bottom: 15px;
             cursor: pointer;
-            transition: all 0.3s;
-        }
-        .problem-select:focus {
-            outline: none;
-            border-color: #ff6b9d;
-            box-shadow: 0 0 15px rgba(255, 107, 157, 0.3);
         }
         .custom-input {
             width: 100%;
@@ -98,7 +76,6 @@
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s;
             font-family: 'Noto Sans TC', sans-serif;
             font-weight: 700;
         }
@@ -106,10 +83,6 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
         }
         .response-area {
             margin-top: 30px;
@@ -121,15 +94,7 @@
             display: none;
             animation: fadeIn 0.5s ease;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .response-text {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #f0f0f0;
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .voice-controls {
             margin-top: 20px;
             display: flex;
@@ -138,16 +103,7 @@
             justify-content: center;
             align-items: center;
         }
-        .voice-controls label {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.9rem;
-            color: #a0a0a0;
-        }
-        .voice-controls input[type="range"] {
-            width: 100px;
-        }
+        .voice-controls label { display: flex; align-items: center; gap: 5px; font-size: 0.9rem; color: #a0a0a0; }
         .voice-btn {
             padding: 8px 20px;
             background: rgba(147, 51, 234, 0.3);
@@ -155,43 +111,6 @@
             color: #fff;
             border-radius: 20px;
             cursor: pointer;
-            transition: all 0.3s;
-        }
-        .voice-btn:hover {
-            background: rgba(147, 51, 234, 0.5);
-        }
-        .notice {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(255, 193, 7, 0.1);
-            border: 1px solid rgba(255, 193, 7, 0.3);
-            border-radius: 10px;
-            font-size: 0.9rem;
-            color: #ffc107;
-            display: none;
-        }
-        .notice.show { display: block; }
-        .footer {
-            margin-top: 40px;
-            color: #666;
-            font-size: 0.9rem;
-        }
-        .heart {
-            color: #ff6b9d;
-            animation: heartbeat 1.5s ease-in-out infinite;
-            display: inline-block;
-        }
-        @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-        .speaking {
-            animation: pulse 1s infinite;
-        }
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.7; }
-            100% { opacity: 1; }
         }
         .voice-select {
             background: rgba(0,0,0,0.3);
@@ -201,17 +120,6 @@
             padding: 6px 10px;
             font-size: 0.85rem;
             min-width: 220px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .voice-select:hover, .voice-select:focus {
-            border-color: rgba(147,51,234,0.8);
-            background: rgba(0,0,0,0.5);
-            outline: none;
-        }
-        .voice-select option {
-            background: #1a1a2e;
-            color: #fff;
         }
         .tts-status {
             font-size: 0.75rem;
@@ -220,22 +128,17 @@
             margin-left: 8px;
             display: inline-block;
         }
-        .tts-status.edge {
-            background: rgba(34,197,94,0.2);
-            color: #86efac;
-            border: 1px solid rgba(34,197,94,0.3);
-        }
-        .tts-status.local {
-            background: rgba(251,191,36,0.2);
-            color: #fde047;
-            border: 1px solid rgba(251,191,36,0.3);
-        }
+        .tts-status.edge { background: rgba(34,197,94,0.2); color: #86efac; border: 1px solid rgba(34,197,94,0.3); }
+        .tts-status.local { background: rgba(251,191,36,0.2); color: #fde047; border: 1px solid rgba(251,191,36,0.3); }
+        .footer { margin-top: 40px; color: #666; font-size: 0.9rem; }
+        .speaking { animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
     </style>
 <base target="_blank">
 </head>
 <body>
     <div class="container">
-        <h1>鶯鶯姊的心靈熱線 <span class="heart">❤️</span></h1>
+        <h1>鶯鶯姊的心靈熱線</h1>
         <p class="subtitle">有什麼煩惱，說出來就舒服多了！</p>
 
         <div class="chat-box">
@@ -245,79 +148,67 @@
 
             <select class="problem-select" id="problemSelect" onchange="selectResponse()">
                 <option value="">請選擇您的煩惱類型...</option>
-                <option value="work">💼 工作不順心</option>
-                <option value="love">💔 感情問題</option>
-                <option value="money">💰 金錢煩惱</option>
-                <option value="family">👨‍👩‍👧‍👦 家庭關係</option>
-                <option value="health">🏥 健康問題</option>
-                <option value="friend">👥 人際關係</option>
-                <option value="custom">📝 其他煩惱（自訂）</option>
+                <option value="work">工作不順心</option>
+                <option value="love">感情問題</option>
+                <option value="money">金錢煩惱</option>
+                <option value="family">家庭關係</option>
+                <option value="health">健康問題</option>
+                <option value="friend">人際關係</option>
+                <option value="custom">其他煩惱（自訂）</option>
             </select>
 
             <input type="text" class="custom-input" id="customProblem" placeholder="請輸入您的煩惱內容...">
 
-            <button class="btn btn-primary" onclick="generateResponse()">
-                🎙️ 鶯鶯姊開示
-            </button>
+            <button class="btn btn-primary" onclick="generateResponse()">鶯鶯姊開示</button>
 
             <div class="voice-controls">
                 <label>語音角色：
                     <select id="voiceSelect" class="voice-select">
-                        <optgroup label="🎙️ 神經網路語音（推薦）">
+                        <optgroup label="神經網路語音（推薦）">
                             <option value="zh-TW-HsiaoChenNeural" selected>鶯鶯姊（曉臻 - 台灣女声）</option>
                             <option value="zh-TW-HsiaoYuNeural">溫柔姊（曉雨 - 台灣女声）</option>
                             <option value="zh-TW-YunJheNeural">暖心哥（雲哲 - 台灣男声）</option>
-                            <option value="zh-CN-XiaoxiaoNeural">曉曉（中國女声 - 活潑）</option>
-                            <option value="zh-CN-YunxiNeural">雲希（中國男声 - 清朗）</option>
-                            <option value="zh-CN-XiaoyiNeural">曉伊（中國女声 - 甜美）</option>
+                            <option value="zh-CN-XiaoxiaoNeural">曉曉（中國女声）</option>
+                            <option value="zh-CN-YunxiNeural">雲希（中國男声）</option>
                         </optgroup>
-                        <optgroup label="🔊 系統語音（離線）">
+                        <optgroup label="系統語音（離線）">
                             <option value="web-speech">瀏覽器預設語音</option>
                         </optgroup>
                     </select>
                     <span id="ttsStatus" class="tts-status edge">Edge TTS</span>
                 </label>
-                <label>語速: <input type="range" id="rate" min="0.5" max="2" step="0.1" value="0.95"></label>
-                <label>音調: <input type="range" id="pitch" min="0.5" max="2" step="0.1" value="1.05"></label>
-                <button class="voice-btn" onclick="testVoice()">🎵 試聽</button>
-            </div>
-
-            <div class="notice" id="noticeBox">
-                ⚠️ 請使用 Chrome 或 Edge 瀏覽器以獲得最佳語音體驗
+                <button class="voice-btn" onclick="testVoice()">試聽</button>
             </div>
         </div>
 
         <div class="response-area" id="responseArea">
-            <div class="response-text" id="responseText"></div>
-            <button class="btn voice-btn" id="speakBtn" onclick="toggleSpeak()" style="display:none; margin-top:15px;">
-                🔊 朗讀
-            </button>
+            <div id="responseText"></div>
+            <button class="btn voice-btn" id="speakBtn" onclick="toggleSpeak()" style="display:none; margin-top:15px;">朗讀</button>
         </div>
 
         <div class="footer">
-            <p>🔒 <strong>隱私保護：</strong>語音合成由外部服務提供，對話內容不會被儲存</p>
-            <p style="margin-top:10px; color:#888;">已經有 <span id="visitorCount">0</span> 位朋友來找鶯鶯姊聊天了 💬</p>
+            <p>隱私保護：語音合成由外部服務提供，對話內容不會被儲存</p>
+            <p>已經有 <span id="visitorCount">0</span> 位朋友來找鶯鶯姊聊天了</p>
         </div>
     </div>
 
     <script>
-        const TTS_API_URL = 'https://caihua-tts-proxy.fishtom996.workers.dev';
-        let currentAudio = null;
-        let isSpeaking = false;
-        let synth = window.speechSynthesis || null;
-        let taiwanVoice = null;
-        let voiceReady = false;
-        let useEdgeTTS = true;
-        let fullResponseText = '';
+        var TTS_API_URL = 'https://caihua-tts-proxy.fishtom996.workers.dev';
+        var currentAudio = null;
+        var isSpeaking = false;
+        var synth = window.speechSynthesis || null;
+        var taiwanVoice = null;
+        var voiceReady = false;
+        var useEdgeTTS = true;
+        var fullResponseText = '';
 
-        const VOICE_MAP = {
-            'zh-TW-HsiaoChenNeural': { name: '鶯鶯姊（曉臻）', type: 'edge' },
-            'zh-TW-HsiaoYuNeural': { name: '溫柔姊（曉雨）', type: 'edge' },
-            'zh-TW-YunJheNeural': { name: '暖心哥（雲哲）', type: 'edge' },
-            'zh-CN-XiaoxiaoNeural': { name: '曉曉', type: 'edge' },
-            'zh-CN-YunxiNeural': { name: '雲希', type: 'edge' },
-            'zh-CN-XiaoyiNeural': { name: '曉伊', type: 'edge' },
-            'web-speech': { name: '系統預設', type: 'local' }
+        var VOICE_MAP = {
+            'zh-TW-HsiaoChenNeural': { name: '鶯鶯姊（曉臻）' },
+            'zh-TW-HsiaoYuNeural': { name: '溫柔姊（曉雨）' },
+            'zh-TW-YunJheNeural': { name: '暖心哥（雲哲）' },
+            'zh-CN-XiaoxiaoNeural': { name: '曉曉' },
+            'zh-CN-YunxiNeural': { name: '雲希' },
+            'web-speech': { name: '系統預設' }
         };
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -339,18 +230,7 @@
                         statusEl.textContent = 'Edge TTS';
                         statusEl.className = 'tts-status edge';
                     }
-                    try {
-                        localStorage.setItem('caihua_voice', voiceId);
-                    } catch(e) {}
                 });
-
-                try {
-                    var savedVoice = localStorage.getItem('caihua_voice');
-                    if (savedVoice && VOICE_MAP[savedVoice]) {
-                        voiceSelect.value = savedVoice;
-                        voiceSelect.dispatchEvent(new Event('change'));
-                    }
-                } catch(e) {}
             }
         });
 
@@ -366,65 +246,27 @@
                     statusEl.className = 'tts-status local';
                 }
             }
-            window.addEventListener('online', function() {
-                if (select.value !== 'web-speech') {
-                    useEdgeTTS = true;
-                    var statusEl = document.getElementById('ttsStatus');
-                    if (statusEl) {
-                        statusEl.textContent = 'Edge TTS';
-                        statusEl.className = 'tts-status edge';
-                    }
-                }
-            });
-            window.addEventListener('offline', function() {
-                useEdgeTTS = false;
-                select.value = 'web-speech';
-                var statusEl = document.getElementById('ttsStatus');
-                if (statusEl) {
-                    statusEl.textContent = '離線模式';
-                    statusEl.className = 'tts-status local';
-                }
-            });
         }
 
         function initVoice() {
-            if (!synth) {
-                console.log('瀏覽器不支持語音功能');
-                return;
-            }
+            if (!synth) return;
             var voices = synth.getVoices();
-            console.log('可用語音數量:', voices.length);
-
             var voicePriority = [
                 function(v) { return v.name.indexOf('HsiaoChen') !== -1 && v.name.indexOf('Natural') !== -1; },
-                function(v) { return v.name.indexOf('HsiaoYu') !== -1 && v.name.indexOf('Natural') !== -1; },
-                function(v) { return v.name.indexOf('YunJhe') !== -1 && v.name.indexOf('Natural') !== -1; },
-                function(v) { return v.name.indexOf('Google') !== -1 && v.lang.indexOf('zh-TW') !== -1; },
                 function(v) { return v.name.indexOf('Google') !== -1 && v.lang.indexOf('zh') !== -1; },
-                function(v) { return v.lang === 'zh-TW'; },
-                function(v) { return v.lang.indexOf('zh-Hant') !== -1; },
                 function(v) { return v.lang.indexOf('zh') !== -1; },
                 function(v) { return true; }
             ];
-
             for (var i = 0; i < voicePriority.length; i++) {
-                var found = null;
                 for (var j = 0; j < voices.length; j++) {
                     if (voicePriority[i](voices[j])) {
-                        found = voices[j];
+                        taiwanVoice = voices[j];
                         break;
                     }
                 }
-                if (found) {
-                    taiwanVoice = found;
-                    break;
-                }
+                if (taiwanVoice) break;
             }
-
-            if (taiwanVoice) {
-                voiceReady = true;
-                console.log('系統語音:', taiwanVoice.name, taiwanVoice.lang);
-            }
+            if (taiwanVoice) voiceReady = true;
         }
 
         if (speechSynthesis && speechSynthesis.onvoiceschanged !== undefined) {
@@ -433,7 +275,7 @@
 
         function speakText(text) {
             stopSpeaking();
-            var cleanText = text.replace(/[💪🌟💅✨🤗💕🍎🌈🎯🔥🎉💰❤️]/g, '').replace(/[❝❞]/g, '');
+            var cleanText = text.replace(/[💪🌟💅✨🤗💕🍎🌈🎯🔥🎉💰❤️]/g, '');
             var voiceSelect = document.getElementById('voiceSelect');
             var selectedVoice = voiceSelect ? voiceSelect.value : 'zh-TW-HsiaoChenNeural';
 
@@ -442,75 +284,81 @@
                 return;
             }
 
-            speakWithEdgeTTS(cleanText, selectedVoice).catch(function(error) {
-                console.warn('Edge TTS 失敗，fallback 到系統語音:', error);
+            speakWithEdgeTTS(cleanText, selectedVoice).then(function() {
+                console.log('TTS 成功');
+            }).catch(function(error) {
+                console.warn('Edge TTS 失敗，fallback:', error);
                 speakWithWebSpeech(cleanText);
             });
         }
 
-        async function speakWithEdgeTTS(text, voiceId) {
-            var rateInput = document.getElementById('rate');
-            var pitchInput = document.getElementById('pitch');
-            var rate = rateInput ? rateInput.value : '0.95';
-            var pitch = pitchInput ? pitchInput.value : '1.05';
+        function speakWithEdgeTTS(text, voiceId) {
+            return new Promise(function(resolve, reject) {
+                var rateInput = document.getElementById('rate');
+                var pitchInput = document.getElementById('pitch');
+                var rate = rateInput ? rateInput.value : '0.95';
+                var pitch = pitchInput ? pitchInput.value : '1.05';
 
-            var ratePercent = Math.round((parseFloat(rate) - 1) * 100);
-            var rateStr = ratePercent >= 0 ? '+' + ratePercent + '%' : ratePercent + '%';
-            var pitchHz = Math.round((parseFloat(pitch) - 1) * 50);
-            var pitchStr = pitchHz >= 0 ? '+' + pitchHz + 'Hz' : pitchHz + 'Hz';
+                var ratePercent = Math.round((parseFloat(rate) - 1) * 100);
+                var rateStr = ratePercent >= 0 ? '+' + ratePercent + '%' : ratePercent + '%';
+                var pitchHz = Math.round((parseFloat(pitch) - 1) * 50);
+                var pitchStr = pitchHz >= 0 ? '+' + pitchHz + 'Hz' : pitchHz + 'Hz';
 
-            var response = await fetch(TTS_API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    text: text,
-                    voice: voiceId,
-                    rate: rateStr,
-                    pitch: pitchStr,
-                    volume: '+0%'
-                })
+                fetch(TTS_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        text: text,
+                        voice: voiceId,
+                        rate: rateStr,
+                        pitch: pitchStr,
+                        volume: '+0%'
+                    })
+                }).then(function(response) {
+                    if (!response.ok) {
+                        return response.json().then(function(data) {
+                            throw new Error(data.error || 'HTTP ' + response.status);
+                        }).catch(function() {
+                            throw new Error('HTTP ' + response.status);
+                        });
+                    }
+                    return response.blob();
+                }).then(function(audioBlob) {
+                    var audioUrl = URL.createObjectURL(audioBlob);
+                    currentAudio = new Audio(audioUrl);
+
+                    isSpeaking = true;
+                    var btn = document.getElementById('speakBtn');
+                    if (btn) {
+                        btn.textContent = '停止';
+                        btn.classList.add('speaking');
+                    }
+
+                    currentAudio.onended = function() {
+                        isSpeaking = false;
+                        if (btn) {
+                            btn.textContent = '朗讀';
+                            btn.classList.remove('speaking');
+                        }
+                        URL.revokeObjectURL(audioUrl);
+                        currentAudio = null;
+                        resolve();
+                    };
+
+                    currentAudio.onerror = function() {
+                        isSpeaking = false;
+                        if (btn) {
+                            btn.textContent = '朗讀';
+                            btn.classList.remove('speaking');
+                        }
+                        URL.revokeObjectURL(audioUrl);
+                        currentAudio = null;
+                        reject(new Error('音訊播放失敗'));
+                    };
+
+                    currentAudio.play().then(resolve).catch(reject);
+                }).catch(reject);
             });
-
-            if (!response.ok) {
-                var errorData = {};
-                try {
-                    errorData = await response.json();
-                } catch(e) {}
-                throw new Error(errorData.error || 'HTTP ' + response.status);
-            }
-
-            var audioBlob = await response.blob();
-            var audioUrl = URL.createObjectURL(audioBlob);
-            currentAudio = new Audio(audioUrl);
-
-            isSpeaking = true;
-            var btn = document.getElementById('speakBtn');
-            if (btn) {
-                btn.textContent = '⏹ 停止';
-                btn.classList.add('speaking');
-            }
-
-            currentAudio.onended = function() {
-                isSpeaking = false;
-                if (btn) {
-                    btn.textContent = '🔊 朗讀';
-                    btn.classList.remove('speaking');
-                }
-                URL.revokeObjectURL(audioUrl);
-                currentAudio = null;
-            };
-
-            currentAudio.onerror = function() {
-                isSpeaking = false;
-                if (btn) {
-                    btn.textContent = '🔊 朗讀';
-                    btn.classList.remove('speaking');
-                }
-                URL.revokeObjectURL(audioUrl);
-                currentAudio = null;
-            };
-
-            await currentAudio.play();
         }
 
         function speakWithWebSpeech(text) {
@@ -523,17 +371,15 @@
             var u = new SpeechSynthesisUtterance(text);
             u.voice = taiwanVoice;
             u.lang = 'zh-TW';
-            var rateInput = document.getElementById('rate');
-            var pitchInput = document.getElementById('pitch');
-            u.rate = parseFloat(rateInput ? rateInput.value : 0.95);
-            u.pitch = parseFloat(pitchInput ? pitchInput.value : 1.05);
+            u.rate = 0.95;
+            u.pitch = 1.05;
             u.volume = 0.9;
 
             u.onstart = function() {
                 isSpeaking = true;
                 var btn = document.getElementById('speakBtn');
                 if (btn) {
-                    btn.textContent = '⏹ 停止';
+                    btn.textContent = '停止';
                     btn.classList.add('speaking');
                 }
             };
@@ -541,18 +387,9 @@
                 isSpeaking = false;
                 var btn = document.getElementById('speakBtn');
                 if (btn) {
-                    btn.textContent = '🔊 朗讀';
+                    btn.textContent = '朗讀';
                     btn.classList.remove('speaking');
                 }
-            };
-            u.onerror = function(e) {
-                isSpeaking = false;
-                var btn = document.getElementById('speakBtn');
-                if (btn) {
-                    btn.textContent = '🔊 朗讀';
-                    btn.classList.remove('speaking');
-                }
-                console.error('語音錯誤:', e);
             };
             synth.speak(u);
         }
@@ -567,7 +404,7 @@
             isSpeaking = false;
             var btn = document.getElementById('speakBtn');
             if (btn) {
-                btn.textContent = '🔊 朗讀';
+                btn.textContent = '朗讀';
                 btn.classList.remove('speaking');
             }
         }
@@ -596,9 +433,7 @@
         function selectResponse() {
             var select = document.getElementById('problemSelect');
             var customInput = document.getElementById('customProblem');
-            var selectedValue = select ? select.value : '';
-
-            if (selectedValue === 'custom') {
+            if (select && select.value === 'custom') {
                 if (customInput) {
                     customInput.style.display = 'block';
                     customInput.focus();
@@ -620,16 +455,9 @@
             var problem = select ? select.value : '';
             if (problem === 'custom') {
                 problem = customInput ? customInput.value.trim() : '';
-                if (!problem) {
-                    alert('請輸入您的煩惱內容！');
-                    return;
-                }
+                if (!problem) { alert('請輸入您的煩惱內容！'); return; }
             }
-
-            if (!problem) {
-                alert('請選擇或輸入您的煩惱！');
-                return;
-            }
+            if (!problem) { alert('請選擇或輸入您的煩惱！'); return; }
 
             var responses = {
                 'work': '工作不順心啊？聽我說，職場就像一場馬拉松，不是比誰跑得快，是比誰撐得久！遇到討厭的同事？把他當空氣，專注做好自己的事。主管機車？想想他也有KPI壓力啦。記住，你的價值不是由別人決定的！每天對著鏡子說三次「我很棒」，慢慢就會真的變很棒！加油！',
@@ -640,26 +468,14 @@
                 'friend': '朋友問題啊？長大後就會發現，朋友貴精不貴多。真正的好朋友，是會在你低潮時陪著你的人。如果一段友誼讓你總是感到疲憊，或許該重新評估了。把時間留給那些讓你感到溫暖的人。記住，獨處並不可怕，勉強的社交才可怕！'
             };
 
-            var response = '';
-            if (responses[problem]) {
-                response = responses[problem];
-            } else {
-                var genericResponses = [
-                    '「' + problem + '」這個煩惱啊，聽起來真的很讓人心煩。但是你要知道，每個人都有自己的難關，你並不孤單。試著把大問題拆成小步驟，一步一步來。不要對自己太嚴格，你已經很努力了！記住，風雨過後總會有彩虹，這個難關一定會過去的。加油！',
-                    '關於「' + problem + '」，我想說...人生本來就不會一帆風順，正是這些挫折讓我們成長。試著換個角度看問題，也許會發現新的可能性。不要一直鑽牛角尖，出去走走、運動一下，讓大腦休息。你比你想像的更有韌性！相信自己！',
-                    '「' + problem + '」這件事，確實讓人感到困擾。但是聽我說，你現在的感受是暫時的，不會永遠這樣。找個信任的人聊聊，或者把感受寫下來，會舒服很多。記住，尋求幫助不是軟弱，是勇敢的表現。你值得被支持、被愛！'
-                ];
-                response = genericResponses[Math.floor(Math.random() * genericResponses.length)];
-            }
+            var response = responses[problem] || '「' + problem + '」這個煩惱啊，聽起來真的很讓人心煩。但是你要知道，每個人都有自己的難關，你並不孤單。試著把大問題拆成小步驟，一步一步來。不要對自己太嚴格，你已經很努力了！記住，風雨過後總會有彩虹，這個難關一定會過去的。加油！';
 
             fullResponseText = response;
             if (responseArea) {
                 responseArea.innerHTML = '';
                 responseArea.classList.add('show');
             }
-            if (speakBtn) {
-                speakBtn.style.display = 'inline-block';
-            }
+            if (speakBtn) speakBtn.style.display = 'inline-block';
 
             typeWriter(responseArea, response, 50);
         }
@@ -668,33 +484,15 @@
             if (!element) return;
             var i = 0;
             element.innerHTML = '';
-
             function type() {
                 if (i < text.length) {
-                    var char = text.charAt(i);
-                    if (char === '
-') {
-                        element.innerHTML += '<br>';
-                    } else {
-                        element.innerHTML += char;
-                    }
+                    element.innerHTML += text.charAt(i);
                     i++;
                     setTimeout(type, speed);
                 }
             }
-
             type();
         }
-
-        document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && e.key === 'h') {
-                e.preventDefault();
-                var responses = document.querySelectorAll('.response-text');
-                if (responses.length > 0) {
-                    responses[responses.length - 1].innerHTML += '<br><br>🎉 彩蛋：記得每天對自己說「我很棒」！';
-                }
-            }
-        });
     </script>
 </body>
 </html>
