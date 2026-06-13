@@ -50,14 +50,20 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
         }
-       .avatar {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    margin: 0 auto 20px;
-    overflow: hidden;
-    box-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
-}
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+        }
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
         .problem-select {
             width: 100%;
             padding: 15px;
@@ -187,7 +193,6 @@
             50% { opacity: 0.7; }
             100% { opacity: 1; }
         }
-        /* 語音選擇器樣式 */
         .voice-select {
             background: rgba(0,0,0,0.3);
             color: #fff;
@@ -208,7 +213,6 @@
             background: #1a1a2e;
             color: #fff;
         }
-        /* TTS 狀態指示 */
         .tts-status {
             font-size: 0.75rem;
             padding: 2px 8px;
@@ -227,17 +231,18 @@
             border: 1px solid rgba(251,191,36,0.3);
         }
     </style>
+<base target="_blank">
 </head>
 <body>
     <div class="container">
         <h1>鶯鶯姊的心靈熱線 <span class="heart">❤️</span></h1>
         <p class="subtitle">有什麼煩惱，說出來就舒服多了！</p>
-        
+
         <div class="chat-box">
-           <div class="avatar">
-    <img src="yingying.jpg" alt="鶯鶯姊" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
-</div>
-            
+            <div class="avatar">
+                <img src="yingying.jpg" alt="鶯鶯姊">
+            </div>
+
             <select class="problem-select" id="problemSelect" onchange="selectResponse()">
                 <option value="">請選擇您的煩惱類型...</option>
                 <option value="work">💼 工作不順心</option>
@@ -248,13 +253,13 @@
                 <option value="friend">👥 人際關係</option>
                 <option value="custom">📝 其他煩惱（自訂）</option>
             </select>
-            
+
             <input type="text" class="custom-input" id="customProblem" placeholder="請輸入您的煩惱內容...">
-            
+
             <button class="btn btn-primary" onclick="generateResponse()">
                 🎙️ 鶯鶯姊開示
             </button>
-            
+
             <div class="voice-controls">
                 <label>語音角色：
                     <select id="voiceSelect" class="voice-select">
@@ -276,19 +281,19 @@
                 <label>音調: <input type="range" id="pitch" min="0.5" max="2" step="0.1" value="1.05"></label>
                 <button class="voice-btn" onclick="testVoice()">🎵 試聽</button>
             </div>
-            
+
             <div class="notice" id="noticeBox">
                 ⚠️ 請使用 Chrome 或 Edge 瀏覽器以獲得最佳語音體驗
             </div>
         </div>
-        
+
         <div class="response-area" id="responseArea">
             <div class="response-text" id="responseText"></div>
             <button class="btn voice-btn" id="speakBtn" onclick="toggleSpeak()" style="display:none; margin-top:15px;">
                 🔊 朗讀
             </button>
         </div>
-        
+
         <div class="footer">
             <p>🔒 <strong>隱私保護：</strong>語音合成由外部服務提供，對話內容不會被儲存</p>
             <p style="margin-top:10px; color:#888;">已經有 <span id="visitorCount">0</span> 位朋友來找鶯鶯姊聊天了 💬</p>
@@ -296,141 +301,165 @@
     </div>
 
     <script>
-        // ==================== 設定 ====================
         const TTS_API_URL = 'https://caihua-tts-proxy.fishtom996.workers.dev';
-        
         let currentAudio = null;
         let isSpeaking = false;
         let synth = window.speechSynthesis || null;
         let taiwanVoice = null;
         let voiceReady = false;
         let useEdgeTTS = true;
-        
+        let fullResponseText = '';
+
         const VOICE_MAP = {
-            'zh-TW-HsiaoChenNeural': { name: '鶯鶯姊（曉臻）', type: 'edge', lang: 'zh-TW' },
-            'zh-TW-HsiaoYuNeural':   { name: '溫柔姊（曉雨）', type: 'edge', lang: 'zh-TW' },
-            'zh-TW-YunJheNeural':    { name: '暖心哥（雲哲）', type: 'edge', lang: 'zh-TW' },
-            'zh-CN-XiaoxiaoNeural':  { name: '曉曉', type: 'edge', lang: 'zh-CN' },
-            'zh-CN-YunxiNeural':     { name: '雲希', type: 'edge', lang: 'zh-CN' },
-            'zh-CN-XiaoyiNeural':    { name: '曉伊', type: 'edge', lang: 'zh-CN' },
-            'web-speech':            { name: '系統預設', type: 'local', lang: 'zh-TW' }
+            'zh-TW-HsiaoChenNeural': { name: '鶯鶯姊（曉臻）', type: 'edge' },
+            'zh-TW-HsiaoYuNeural': { name: '溫柔姊（曉雨）', type: 'edge' },
+            'zh-TW-YunJheNeural': { name: '暖心哥（雲哲）', type: 'edge' },
+            'zh-CN-XiaoxiaoNeural': { name: '曉曉', type: 'edge' },
+            'zh-CN-YunxiNeural': { name: '雲希', type: 'edge' },
+            'zh-CN-XiaoyiNeural': { name: '曉伊', type: 'edge' },
+            'web-speech': { name: '系統預設', type: 'local' }
         };
-        
-        // ==================== 初始化 ====================
-        document.addEventListener('DOMContentLoaded', () => {
+
+        document.addEventListener('DOMContentLoaded', function() {
             initVoice();
             setupVoiceSelect();
-            
-            document.getElementById('voiceSelect')?.addEventListener('change', (e) => {
-                const voiceId = e.target.value;
-                const statusEl = document.getElementById('ttsStatus');
-                if (voiceId === 'web-speech') {
-                    useEdgeTTS = false;
-                    statusEl.textContent = '系統語音';
-                    statusEl.className = 'tts-status local';
-                } else {
-                    useEdgeTTS = true;
-                    statusEl.textContent = 'Edge TTS';
-                    statusEl.className = 'tts-status edge';
-                }
-                localStorage.setItem('caihua_voice', voiceId);
-            });
-            
-            const savedVoice = localStorage.getItem('caihua_voice');
-            if (savedVoice && VOICE_MAP[savedVoice]) {
-                document.getElementById('voiceSelect').value = savedVoice;
-                document.getElementById('voiceSelect').dispatchEvent(new Event('change'));
+            updateVisitorCount();
+
+            var voiceSelect = document.getElementById('voiceSelect');
+            if (voiceSelect) {
+                voiceSelect.addEventListener('change', function(e) {
+                    var voiceId = e.target.value;
+                    var statusEl = document.getElementById('ttsStatus');
+                    if (voiceId === 'web-speech') {
+                        useEdgeTTS = false;
+                        statusEl.textContent = '系統語音';
+                        statusEl.className = 'tts-status local';
+                    } else {
+                        useEdgeTTS = true;
+                        statusEl.textContent = 'Edge TTS';
+                        statusEl.className = 'tts-status edge';
+                    }
+                    try {
+                        localStorage.setItem('caihua_voice', voiceId);
+                    } catch(e) {}
+                });
+
+                try {
+                    var savedVoice = localStorage.getItem('caihua_voice');
+                    if (savedVoice && VOICE_MAP[savedVoice]) {
+                        voiceSelect.value = savedVoice;
+                        voiceSelect.dispatchEvent(new Event('change'));
+                    }
+                } catch(e) {}
             }
         });
-        
+
         function setupVoiceSelect() {
-            const select = document.getElementById('voiceSelect');
+            var select = document.getElementById('voiceSelect');
             if (!select) return;
             if (!navigator.onLine) {
                 select.value = 'web-speech';
                 useEdgeTTS = false;
-                document.getElementById('ttsStatus').textContent = '離線模式';
-                document.getElementById('ttsStatus').className = 'tts-status local';
+                var statusEl = document.getElementById('ttsStatus');
+                if (statusEl) {
+                    statusEl.textContent = '離線模式';
+                    statusEl.className = 'tts-status local';
+                }
             }
-            window.addEventListener('online', () => {
+            window.addEventListener('online', function() {
                 if (select.value !== 'web-speech') {
                     useEdgeTTS = true;
-                    document.getElementById('ttsStatus').textContent = 'Edge TTS';
-                    document.getElementById('ttsStatus').className = 'tts-status edge';
+                    var statusEl = document.getElementById('ttsStatus');
+                    if (statusEl) {
+                        statusEl.textContent = 'Edge TTS';
+                        statusEl.className = 'tts-status edge';
+                    }
                 }
             });
-            window.addEventListener('offline', () => {
+            window.addEventListener('offline', function() {
                 useEdgeTTS = false;
                 select.value = 'web-speech';
-                document.getElementById('ttsStatus').textContent = '離線模式';
-                document.getElementById('ttsStatus').className = 'tts-status local';
+                var statusEl = document.getElementById('ttsStatus');
+                if (statusEl) {
+                    statusEl.textContent = '離線模式';
+                    statusEl.className = 'tts-status local';
+                }
             });
         }
-        
+
         function initVoice() {
-            const statusEl = document.getElementById('voiceStatus');
-            const noticeEl = document.getElementById('noticeBox');
             if (!synth) {
-                statusEl.textContent = '❌ 瀏覽器不支持語音功能';
-                statusEl.style.background = 'rgba(239,68,68,0.15)';
-                statusEl.style.borderColor = 'rgba(239,68,68,0.3)';
-                statusEl.style.color = '#fca5a5';
-                noticeEl.classList.add('show');
+                console.log('瀏覽器不支持語音功能');
                 return;
             }
-            const voices = synth.getVoices();
-            const voicePriority = [
-                v => v.name.includes('HsiaoChen') && v.name.includes('Natural'),
-                v => v.name.includes('HsiaoYu') && v.name.includes('Natural'),
-                v => v.name.includes('YunJhe') && v.name.includes('Natural'),
-                v => v.name.includes('Google') && v.lang.includes('zh-TW'),
-                v => v.name.includes('Google') && v.lang.includes('zh'),
-                v => v.lang === 'zh-TW',
-                v => v.lang.includes('zh-Hant'),
-                v => v.lang.includes('zh'),
-                v => true
+            var voices = synth.getVoices();
+            console.log('可用語音數量:', voices.length);
+
+            var voicePriority = [
+                function(v) { return v.name.indexOf('HsiaoChen') !== -1 && v.name.indexOf('Natural') !== -1; },
+                function(v) { return v.name.indexOf('HsiaoYu') !== -1 && v.name.indexOf('Natural') !== -1; },
+                function(v) { return v.name.indexOf('YunJhe') !== -1 && v.name.indexOf('Natural') !== -1; },
+                function(v) { return v.name.indexOf('Google') !== -1 && v.lang.indexOf('zh-TW') !== -1; },
+                function(v) { return v.name.indexOf('Google') !== -1 && v.lang.indexOf('zh') !== -1; },
+                function(v) { return v.lang === 'zh-TW'; },
+                function(v) { return v.lang.indexOf('zh-Hant') !== -1; },
+                function(v) { return v.lang.indexOf('zh') !== -1; },
+                function(v) { return true; }
             ];
-            for (const check of voicePriority) {
-                const found = voices.find(check);
-                if (found) { taiwanVoice = found; break; }
+
+            for (var i = 0; i < voicePriority.length; i++) {
+                var found = null;
+                for (var j = 0; j < voices.length; j++) {
+                    if (voicePriority[i](voices[j])) {
+                        found = voices[j];
+                        break;
+                    }
+                }
+                if (found) {
+                    taiwanVoice = found;
+                    break;
+                }
             }
+
             if (taiwanVoice) {
                 voiceReady = true;
                 console.log('系統語音:', taiwanVoice.name, taiwanVoice.lang);
             }
         }
-        
-        if (speechSynthesis.onvoiceschanged !== undefined) {
+
+        if (speechSynthesis && speechSynthesis.onvoiceschanged !== undefined) {
             speechSynthesis.onvoiceschanged = initVoice;
         }
-        
-        // ==================== 主要朗讀函數 ====================
-        async function speakText(text) {
+
+        function speakText(text) {
             stopSpeaking();
-            const cleanText = text.replace(/[💪🌟💅✨🤗💕🍎🌈🎯🔥🎉💰❤️]/g, '').replace(/[❝❞]/g, '');
-            const selectedVoice = document.getElementById('voiceSelect')?.value || 'zh-TW-HsiaoChenNeural';
-            
+            var cleanText = text.replace(/[💪🌟💅✨🤗💕🍎🌈🎯🔥🎉💰❤️]/g, '').replace(/[❝❞]/g, '');
+            var voiceSelect = document.getElementById('voiceSelect');
+            var selectedVoice = voiceSelect ? voiceSelect.value : 'zh-TW-HsiaoChenNeural';
+
             if (selectedVoice === 'web-speech' || !useEdgeTTS || !navigator.onLine) {
                 speakWithWebSpeech(cleanText);
                 return;
             }
-            try {
-                await speakWithEdgeTTS(cleanText, selectedVoice);
-            } catch (error) {
+
+            speakWithEdgeTTS(cleanText, selectedVoice).catch(function(error) {
                 console.warn('Edge TTS 失敗，fallback 到系統語音:', error);
                 speakWithWebSpeech(cleanText);
-            }
+            });
         }
-        
+
         async function speakWithEdgeTTS(text, voiceId) {
-            const rate = document.getElementById('rate')?.value || '0.95';
-            const pitch = document.getElementById('pitch')?.value || '1.05';
-            const ratePercent = Math.round((parseFloat(rate) - 1) * 100);
-            const rateStr = ratePercent >= 0 ? `+${ratePercent}%` : `${ratePercent}%`;
-            const pitchHz = Math.round((parseFloat(pitch) - 1) * 50);
-            const pitchStr = pitchHz >= 0 ? `+${pitchHz}Hz` : `${pitchHz}Hz`;
-            
-            const response = await fetch(TTS_API_URL, {
+            var rateInput = document.getElementById('rate');
+            var pitchInput = document.getElementById('pitch');
+            var rate = rateInput ? rateInput.value : '0.95';
+            var pitch = pitchInput ? pitchInput.value : '1.05';
+
+            var ratePercent = Math.round((parseFloat(rate) - 1) * 100);
+            var rateStr = ratePercent >= 0 ? '+' + ratePercent + '%' : ratePercent + '%';
+            var pitchHz = Math.round((parseFloat(pitch) - 1) * 50);
+            var pitchStr = pitchHz >= 0 ? '+' + pitchHz + 'Hz' : pitchHz + 'Hz';
+
+            var response = await fetch(TTS_API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -441,77 +470,93 @@
                     volume: '+0%'
                 })
             });
-            
+
             if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.error || `HTTP ${response.status}`);
+                var errorData = {};
+                try {
+                    errorData = await response.json();
+                } catch(e) {}
+                throw new Error(errorData.error || 'HTTP ' + response.status);
             }
-            
-            const audioBlob = await response.blob();
-            const audioUrl = URL.createObjectURL(audioBlob);
+
+            var audioBlob = await response.blob();
+            var audioUrl = URL.createObjectURL(audioBlob);
             currentAudio = new Audio(audioUrl);
-            
+
             isSpeaking = true;
-            const btn = document.getElementById('speakBtn');
-            btn.textContent = '⏹ 停止';
-            btn.classList.add('speaking');
-            
-            currentAudio.onended = () => {
+            var btn = document.getElementById('speakBtn');
+            if (btn) {
+                btn.textContent = '⏹ 停止';
+                btn.classList.add('speaking');
+            }
+
+            currentAudio.onended = function() {
                 isSpeaking = false;
-                btn.textContent = '🔊 朗讀';
-                btn.classList.remove('speaking');
+                if (btn) {
+                    btn.textContent = '🔊 朗讀';
+                    btn.classList.remove('speaking');
+                }
                 URL.revokeObjectURL(audioUrl);
                 currentAudio = null;
             };
-            
-            currentAudio.onerror = () => {
+
+            currentAudio.onerror = function() {
                 isSpeaking = false;
-                btn.textContent = '🔊 朗讀';
-                btn.classList.remove('speaking');
+                if (btn) {
+                    btn.textContent = '🔊 朗讀';
+                    btn.classList.remove('speaking');
+                }
                 URL.revokeObjectURL(audioUrl);
                 currentAudio = null;
-                throw new Error('音訊播放失敗');
             };
-            
+
             await currentAudio.play();
         }
-        
+
         function speakWithWebSpeech(text) {
             if (!synth || !voiceReady) {
                 alert('語音功能不可用，請使用Chrome或Edge瀏覽器！');
                 return;
             }
             if (synth.speaking) synth.cancel();
-            
-            const u = new SpeechSynthesisUtterance(text);
+
+            var u = new SpeechSynthesisUtterance(text);
             u.voice = taiwanVoice;
             u.lang = 'zh-TW';
-            u.rate = parseFloat(document.getElementById('rate')?.value || 0.95);
-            u.pitch = parseFloat(document.getElementById('pitch')?.value || 1.05);
+            var rateInput = document.getElementById('rate');
+            var pitchInput = document.getElementById('pitch');
+            u.rate = parseFloat(rateInput ? rateInput.value : 0.95);
+            u.pitch = parseFloat(pitchInput ? pitchInput.value : 1.05);
             u.volume = 0.9;
-            
-            u.onstart = () => {
+
+            u.onstart = function() {
                 isSpeaking = true;
-                const btn = document.getElementById('speakBtn');
-                btn.textContent = '⏹ 停止';
-                btn.classList.add('speaking');
+                var btn = document.getElementById('speakBtn');
+                if (btn) {
+                    btn.textContent = '⏹ 停止';
+                    btn.classList.add('speaking');
+                }
             };
-            u.onend = () => {
+            u.onend = function() {
                 isSpeaking = false;
-                const btn = document.getElementById('speakBtn');
-                btn.textContent = '🔊 朗讀';
-                btn.classList.remove('speaking');
+                var btn = document.getElementById('speakBtn');
+                if (btn) {
+                    btn.textContent = '🔊 朗讀';
+                    btn.classList.remove('speaking');
+                }
             };
-            u.onerror = (e) => {
+            u.onerror = function(e) {
                 isSpeaking = false;
-                const btn = document.getElementById('speakBtn');
-                btn.textContent = '🔊 朗讀';
-                btn.classList.remove('speaking');
+                var btn = document.getElementById('speakBtn');
+                if (btn) {
+                    btn.textContent = '🔊 朗讀';
+                    btn.classList.remove('speaking');
+                }
                 console.error('語音錯誤:', e);
             };
             synth.speak(u);
         }
-        
+
         function stopSpeaking() {
             if (currentAudio) {
                 currentAudio.pause();
@@ -520,112 +565,115 @@
             }
             if (synth && synth.speaking) synth.cancel();
             isSpeaking = false;
-            const btn = document.getElementById('speakBtn');
-            btn.textContent = '🔊 朗讀';
-            btn.classList.remove('speaking');
+            var btn = document.getElementById('speakBtn');
+            if (btn) {
+                btn.textContent = '🔊 朗讀';
+                btn.classList.remove('speaking');
+            }
         }
-        
+
         function toggleSpeak() {
             if (isSpeaking) stopSpeaking();
             else speakText(fullResponseText);
         }
-        
+
         function testVoice() {
-            const selectedVoice = document.getElementById('voiceSelect')?.value || 'zh-TW-HsiaoChenNeural';
-            const voiceName = VOICE_MAP[selectedVoice]?.name || '語音';
-            const testText = `我是鶯鶯姊，有我在，免煩惱！這是${voiceName}的聲音，你覺得怎麼樣呢？`;
+            var voiceSelect = document.getElementById('voiceSelect');
+            var selectedVoice = voiceSelect ? voiceSelect.value : 'zh-TW-HsiaoChenNeural';
+            var voiceName = VOICE_MAP[selectedVoice] ? VOICE_MAP[selectedVoice].name : '語音';
+            var testText = '我是鶯鶯姊，有我在，免煩惱！這是' + voiceName + '的聲音，你覺得怎麼樣呢？';
             speakText(testText);
         }
-        
-        // ==================== 保留原有函數 ====================
+
         function updateVisitorCount() {
-            const countEl = document.getElementById('visitorCount');
-            const count = Math.floor(Math.random() * 5000) + 1000;
-            countEl.textContent = count.toLocaleString();
-        }
-        
-        function selectResponse() {
-            const select = document.getElementById('problemSelect');
-            const customInput = document.getElementById('customProblem');
-            const selectedValue = select.value;
-            
-            if (selectedValue === 'custom') {
-                customInput.style.display = 'block';
-                customInput.focus();
-            } else {
-                customInput.style.display = 'none';
-                customInput.value = '';
+            var countEl = document.getElementById('visitorCount');
+            if (countEl) {
+                var count = Math.floor(Math.random() * 5000) + 1000;
+                countEl.textContent = count.toLocaleString();
             }
         }
-        
-        function setCharacter(char) {
-            document.querySelectorAll('.character-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.character-btn').forEach(btn => {
-                if (btn.textContent.includes(char === 'yingying' ? '鶯鶯' : '彩花')) {
-                    btn.classList.add('active');
+
+        function selectResponse() {
+            var select = document.getElementById('problemSelect');
+            var customInput = document.getElementById('customProblem');
+            var selectedValue = select ? select.value : '';
+
+            if (selectedValue === 'custom') {
+                if (customInput) {
+                    customInput.style.display = 'block';
+                    customInput.focus();
                 }
-            });
+            } else {
+                if (customInput) {
+                    customInput.style.display = 'none';
+                    customInput.value = '';
+                }
+            }
         }
-        
-        let fullResponseText = '';
-        
+
         function generateResponse() {
-            const select = document.getElementById('problemSelect');
-            const customInput = document.getElementById('customProblem');
-            const responseArea = document.getElementById('responseArea');
-            const speakBtn = document.getElementById('speakBtn');
-            
-            let problem = select.value;
+            var select = document.getElementById('problemSelect');
+            var customInput = document.getElementById('customProblem');
+            var responseArea = document.getElementById('responseArea');
+            var speakBtn = document.getElementById('speakBtn');
+
+            var problem = select ? select.value : '';
             if (problem === 'custom') {
-                problem = customInput.value.trim();
+                problem = customInput ? customInput.value.trim() : '';
                 if (!problem) {
                     alert('請輸入您的煩惱內容！');
                     return;
                 }
             }
-            
+
             if (!problem) {
                 alert('請選擇或輸入您的煩惱！');
                 return;
             }
-            
-            const responses = {
-                'work': '工作不順心啊？聽我說，職場就像一場馬拉松，不是比誰跑得快，是比誰撐得久！遇到討厭的同事？把他當空氣，專注做好自己的事。主管機車？想想他也有KPI壓力啦。記住，你的價值不是由別人決定的！每天對著鏡子說三次「我很棒」，慢慢就會真的變很棒！加油！💪',
-                'love': '感情問題啊？唉呀，這個我最懂了！失戀就像感冒，會痛會難過，但一定會好的。不要一直看對方的社群媒體，那是自虐行為！把時間花在讓自己變得更好，運動、學習、交朋友，等到你發光發熱的時候，對的人就會被吸引來了。記住，愛自己才是終身浪漫的開始！🌟',
-                'money': '錢不夠用啊？這個問題...我也很有同感！但是聽我說，窮只是暫時的，懶才是永久的。先記帳看看錢都花去哪了，砍掉不必要的開支。然後想想怎麼增加收入，斜槓、投資自己、學新技能。記住，投資自己永遠是報酬率最高的！不要灰心，一步步來！💰',
-                'family': '家庭問題啊？這個真的很難解，因為家人是切不斷的緣分。但是記住，你有權利保護自己的情緒空間。如果家人說話讓你難過，可以溫柔但堅定地說「這樣說我會受傷」。不需要為了孝順委屈自己到生病。找個信任的朋友聊聊，或者寫日記宣洩情緒。你值得被好好對待！❤️',
-                'health': '身體不舒服啊？這個不能拖！趕快去看醫生，不要上網亂查症狀，會把自己嚇死。身體是革命的本錢，沒有健康什麼都是空。調整作息、多運動、少吃垃圾食物，這些老套但真的有效。記住，照顧好自己不是自私，是必要！早日康復！🍎',
-                'friend': '朋友問題啊？長大後就會發現，朋友貴精不貴多。真正的好朋友，是會在你低潮時陪著你的人。如果一段友誼讓你總是感到疲憊，或許該重新評估了。把時間留給那些讓你感到溫暖的人。記住，獨處並不可怕，勉強的社交才可怕！🤗'
+
+            var responses = {
+                'work': '工作不順心啊？聽我說，職場就像一場馬拉松，不是比誰跑得快，是比誰撐得久！遇到討厭的同事？把他當空氣，專注做好自己的事。主管機車？想想他也有KPI壓力啦。記住，你的價值不是由別人決定的！每天對著鏡子說三次「我很棒」，慢慢就會真的變很棒！加油！',
+                'love': '感情問題啊？唉呀，這個我最懂了！失戀就像感冒，會痛會難過，但一定會好的。不要一直看對方的社群媒體，那是自虐行為！把時間花在讓自己變得更好，運動、學習、交朋友，等到你發光發熱的時候，對的人就會被吸引來了。記住，愛自己才是終身浪漫的開始！',
+                'money': '錢不夠用啊？這個問題...我也很有同感！但是聽我說，窮只是暫時的，懶才是永久的。先記帳看看錢都花去哪了，砍掉不必要的開支。然後想想怎麼增加收入，斜槓、投資自己、學新技能。記住，投資自己永遠是報酬率最高的！不要灰心，一步步來！',
+                'family': '家庭問題啊？這個真的很難解，因為家人是切不斷的緣分。但是記住，你有權利保護自己的情緒空間。如果家人說話讓你難過，可以溫柔但堅定地說「這樣說我會受傷」。不需要為了孝順委屈自己到生病。找個信任的朋友聊聊，或者寫日記宣洩情緒。你值得被好好對待！',
+                'health': '身體不舒服啊？這個不能拖！趕快去看醫生，不要上網亂查症狀，會把自己嚇死。身體是革命的本錢，沒有健康什麼都是空。調整作息、多運動、少吃垃圾食物，這些老套但真的有效。記住，照顧好自己不是自私，是必要！早日康復！',
+                'friend': '朋友問題啊？長大後就會發現，朋友貴精不貴多。真正的好朋友，是會在你低潮時陪著你的人。如果一段友誼讓你總是感到疲憊，或許該重新評估了。把時間留給那些讓你感到溫暖的人。記住，獨處並不可怕，勉強的社交才可怕！'
             };
-            
-            let response = '';
+
+            var response = '';
             if (responses[problem]) {
                 response = responses[problem];
             } else {
-                const genericResponses = [
-                    `「${problem}」這個煩惱啊，聽起來真的很讓人心煩。但是你要知道，每個人都有自己的難關，你並不孤單。試著把大問題拆成小步驟，一步一步來。不要對自己太嚴格，你已經很努力了！記住，風雨過後總會有彩虹，這個難關一定會過去的。加油！🌈`,
-                    `關於「${problem}」，我想說...人生本來就不會一帆風順，正是這些挫折讓我們成長。試著換個角度看問題，也許會發現新的可能性。不要一直鑽牛角尖，出去走走、運動一下，讓大腦休息。你比你想像的更有韌性！相信自己！✨`,
-                    `「${problem}」這件事，確實讓人感到困擾。但是聽我說，你現在的感受是暫時的，不會永遠這樣。找個信任的人聊聊，或者把感受寫下來，會舒服很多。記住，尋求幫助不是軟弱，是勇敢的表現。你值得被支持、被愛！💕`
+                var genericResponses = [
+                    '「' + problem + '」這個煩惱啊，聽起來真的很讓人心煩。但是你要知道，每個人都有自己的難關，你並不孤單。試著把大問題拆成小步驟，一步一步來。不要對自己太嚴格，你已經很努力了！記住，風雨過後總會有彩虹，這個難關一定會過去的。加油！',
+                    '關於「' + problem + '」，我想說...人生本來就不會一帆風順，正是這些挫折讓我們成長。試著換個角度看問題，也許會發現新的可能性。不要一直鑽牛角尖，出去走走、運動一下，讓大腦休息。你比你想像的更有韌性！相信自己！',
+                    '「' + problem + '」這件事，確實讓人感到困擾。但是聽我說，你現在的感受是暫時的，不會永遠這樣。找個信任的人聊聊，或者把感受寫下來，會舒服很多。記住，尋求幫助不是軟弱，是勇敢的表現。你值得被支持、被愛！'
                 ];
                 response = genericResponses[Math.floor(Math.random() * genericResponses.length)];
             }
-            
+
             fullResponseText = response;
-            responseArea.innerHTML = '';
-            responseArea.classList.add('show');
-            speakBtn.style.display = 'inline-block';
-            
+            if (responseArea) {
+                responseArea.innerHTML = '';
+                responseArea.classList.add('show');
+            }
+            if (speakBtn) {
+                speakBtn.style.display = 'inline-block';
+            }
+
             typeWriter(responseArea, response, 50);
         }
-        
+
         function typeWriter(element, text, speed) {
-            let i = 0;
+            if (!element) return;
+            var i = 0;
             element.innerHTML = '';
-            
+
             function type() {
                 if (i < text.length) {
-                    const char = text.charAt(i);
-                    if (char === '\n') {
+                    var char = text.charAt(i);
+                    if (char === '
+') {
                         element.innerHTML += '<br>';
                     } else {
                         element.innerHTML += char;
@@ -634,23 +682,19 @@
                     setTimeout(type, speed);
                 }
             }
-            
+
             type();
         }
-        
-        // 彩蛋
-        document.addEventListener('keydown', (e) => {
+
+        document.addEventListener('keydown', function(e) {
             if (e.ctrlKey && e.key === 'h') {
                 e.preventDefault();
-                const responses = document.querySelectorAll('.response-text');
+                var responses = document.querySelectorAll('.response-text');
                 if (responses.length > 0) {
                     responses[responses.length - 1].innerHTML += '<br><br>🎉 彩蛋：記得每天對自己說「我很棒」！';
                 }
             }
         });
-        
-        // 初始化
-        updateVisitorCount();
     </script>
 </body>
 </html>
